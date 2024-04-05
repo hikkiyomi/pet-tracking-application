@@ -7,9 +7,15 @@ import ru.hikkiyomi.model.Owner;
 import java.util.List;
 
 public class OwnerService implements Service<Owner> {
-    private final OwnerDao dao = new OwnerDao();
+    private final OwnerDao dao;
 
-    public OwnerService() {}
+    public OwnerService() {
+        this.dao = new OwnerDao();
+    }
+
+    public OwnerService(OwnerDao dao) {
+        this.dao = dao;
+    }
 
     @Override
     public Owner findById(int id) {

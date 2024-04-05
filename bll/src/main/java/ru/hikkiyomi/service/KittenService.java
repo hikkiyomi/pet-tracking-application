@@ -7,7 +7,15 @@ import ru.hikkiyomi.model.Owner;
 import java.util.List;
 
 public class KittenService implements Service<Kitten> {
-    private final KittenDao dao = new KittenDao();
+    private final KittenDao dao;
+
+    public KittenService() {
+        this.dao = new KittenDao();
+    }
+
+    public KittenService(KittenDao dao) {
+        this.dao = dao;
+    }
 
     @Override
     public Kitten findById(int id) {

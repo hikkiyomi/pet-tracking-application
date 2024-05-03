@@ -2,18 +2,18 @@ package ru.hikkiyomi.controllers;
 
 import ru.hikkiyomi.model.Kitten;
 import ru.hikkiyomi.service.KittenService;
-import ru.hikkiyomi.service.Service;
+import ru.hikkiyomi.service.CommonService;
 
 import java.util.List;
 
 public class ConsoleKittenController implements Controller<Kitten> {
-    private final Service<Kitten> service;
+    private final CommonService<Kitten> service;
 
     public ConsoleKittenController() {
         this.service = new KittenService();
     }
 
-    public ConsoleKittenController(Service<Kitten> service) {
+    public ConsoleKittenController(CommonService<Kitten> service) {
         this.service = service;
     }
 

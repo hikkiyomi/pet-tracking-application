@@ -2,18 +2,18 @@ package ru.hikkiyomi.controllers;
 
 import ru.hikkiyomi.model.Owner;
 import ru.hikkiyomi.service.OwnerService;
-import ru.hikkiyomi.service.Service;
+import ru.hikkiyomi.service.CommonService;
 
 import java.util.List;
 
 public class ConsoleOwnerController implements Controller<Owner> {
-    private final Service<Owner> service;
+    private final CommonService<Owner> service;
 
     ConsoleOwnerController() {
         this.service = new OwnerService();
     }
 
-    ConsoleOwnerController(Service<Owner> service) {
+    ConsoleOwnerController(CommonService<Owner> service) {
         this.service = service;
     }
 

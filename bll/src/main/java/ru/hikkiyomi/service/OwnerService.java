@@ -1,17 +1,16 @@
 package ru.hikkiyomi.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.hikkiyomi.dao.OwnerDao;
-import ru.hikkiyomi.model.Kitten;
 import ru.hikkiyomi.model.Owner;
 
 import java.util.List;
 
-public class OwnerService implements Service<Owner> {
-    private final OwnerDao dao;
-
-    public OwnerService() {
-        this.dao = new OwnerDao();
-    }
+@Service
+public class OwnerService implements CommonService<Owner> {
+    @Autowired
+    private OwnerDao dao;
 
     public OwnerService(OwnerDao dao) {
         this.dao = dao;
@@ -19,17 +18,12 @@ public class OwnerService implements Service<Owner> {
 
     @Override
     public Owner findById(int id) {
-        return dao.findById(id);
+        return (Owner) dao.findById(id);
     }
 
     @Override
     public void save(Owner obj) {
         dao.save(obj);
-    }
-
-    @Override
-    public void update(Owner obj) {
-        dao.update(obj);
     }
 
     @Override
@@ -40,13 +34,5 @@ public class OwnerService implements Service<Owner> {
     @Override
     public List<Owner> findAll() {
         return dao.findAll();
-    }
-
-    public Kitten findKittenById(int id) {
-        return dao.findKittenById(id);
-    }
-
-    public void removeKitten(Owner owner, Kitten kitten) {
-        owner.removeKitten(kitten);
     }
 }

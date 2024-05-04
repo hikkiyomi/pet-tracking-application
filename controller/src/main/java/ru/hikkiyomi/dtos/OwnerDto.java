@@ -10,19 +10,22 @@ import java.util.Optional;
 
 @Data
 public class OwnerDto {
+    private int id;
     private String name;
     private Date birthDate;
-    private List<String> kittens;
+    private List<SimpleKitten> kittens = new ArrayList<>();
+
+    public OwnerDto() {}
 
     public OwnerDto(Optional<Owner> owner) {
         if (owner.isEmpty()) {
             return;
         }
 
+        this.id = owner.get().getId();
         this.name = owner.get().getName();
         this.birthDate = owner.get().getBirthDate();
-        this.kittens = new ArrayList<>();
 
-        owner.get().getKittens().forEach(kitten -> this.kittens.add(kitten.getName()));
+        owner.get().getKittens().forEach(kitten -> this.kittens.add(new SimpleKitten(kitten.getId(), kitten.getName())));
     }
 }

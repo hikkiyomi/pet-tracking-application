@@ -9,13 +9,11 @@ public class KittenDtoToKittenConverter implements BasicConverter<KittenDto, Kit
     @Override
     public Kitten convert(KittenDto kittenDto) {
         Kitten kitten = new Kitten();
-        OwnerDtoToOwnerConverter converter = new OwnerDtoToOwnerConverter();
 
         kitten.setName(kittenDto.getName());
         kitten.setBirthDate(kittenDto.getBirthdate());
         kitten.setBreed(kittenDto.getBreed());
         kitten.setColor(kittenDto.getColor());
-        kitten.setOwner(converter.convert(kittenDto.getOwner()));
         kitten.setFriends(new ArrayList<>());
 
         return kitten;

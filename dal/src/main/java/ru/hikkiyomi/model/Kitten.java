@@ -37,6 +37,11 @@ public class Kitten {
     private Owner owner;
 
     @ManyToMany(targetEntity = Kitten.class)
+    @JoinTable(
+            name = "kittens_friends",
+            joinColumns = { @JoinColumn(name = "kitten_id") },
+            inverseJoinColumns = { @JoinColumn(name = "friend_id") }
+    )
     @ToString.Exclude
     private List<Kitten> friends;
 
@@ -60,5 +65,6 @@ public class Kitten {
         }
 
         friends.add(kitten);
+        kitten.addFriend(this);
     }
 }

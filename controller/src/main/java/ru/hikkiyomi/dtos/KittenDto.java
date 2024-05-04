@@ -4,9 +4,9 @@ import lombok.Data;
 import ru.hikkiyomi.model.Breed;
 import ru.hikkiyomi.model.Color;
 import ru.hikkiyomi.model.Kitten;
-import ru.hikkiyomi.model.Owner;
 
 import java.sql.Date;
+import java.util.Optional;
 
 @Data
 public class KittenDto {
@@ -14,13 +14,17 @@ public class KittenDto {
     private Date birthdate;
     private Breed breed;
     private Color color;
-    private Owner owner;
+    private OwnerDto owner;
 
-    public KittenDto(Kitten kitten) {
-        this.name = kitten.getName();
-        this.birthdate = kitten.getBirthDate();
-        this.breed = kitten.getBreed();
-        this.color = kitten.getColor();
-        this.owner = kitten.getOwner();
+    public KittenDto(Optional<Kitten> kitten) {
+        if (kitten.isEmpty()) {
+            return;
+        }
+
+        this.name = kitten.get().getName();
+        this.birthdate = kitten.get().getBirthDate();
+        this.breed = kitten.get().getBreed();
+        this.color = kitten.get().getColor();
+        this.owner = new OwnerDto(Optional.ofNullable(kitten.get().getOwner()));
     }
 }

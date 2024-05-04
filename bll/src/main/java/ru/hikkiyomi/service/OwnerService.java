@@ -6,6 +6,7 @@ import ru.hikkiyomi.dao.OwnerDao;
 import ru.hikkiyomi.model.Owner;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OwnerService implements CommonService<Owner> {
@@ -17,8 +18,8 @@ public class OwnerService implements CommonService<Owner> {
     }
 
     @Override
-    public Owner findById(int id) {
-        return (Owner) dao.findById(id);
+    public Optional<Owner> findById(int id) {
+        return Optional.ofNullable(dao.findById(id));
     }
 
     @Override

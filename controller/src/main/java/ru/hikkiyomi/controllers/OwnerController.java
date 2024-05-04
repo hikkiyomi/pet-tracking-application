@@ -11,6 +11,7 @@ import ru.hikkiyomi.service.OwnerService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/owners")
@@ -40,7 +41,7 @@ public class OwnerController implements BasicController<OwnerDto> {
         List<Owner> owners = service.findAll();
         List<OwnerDto> dtos = new ArrayList<>();
 
-        owners.forEach(owner -> dtos.add(new OwnerDto(owner)));
+        owners.forEach(owner -> dtos.add(new OwnerDto(Optional.of(owner))));
 
         return dtos;
     }
@@ -48,19 +49,20 @@ public class OwnerController implements BasicController<OwnerDto> {
     @Override
     @PutMapping("/update/{id}")
     public void update(@PathVariable int id, @RequestBody OwnerDto obj) {
-        Owner updating = service.findById(id);
+        Optional<Owner> updating = service.findById(id);
 
-        if (updating != null) {
-            updating.setName(obj.getName());
-            updating.setBirthDate(obj.getBirthDate());
+        if (updating.isPresent()) {
+            updating.get().setName(obj.getName());
+            updating.get().setBirthDate(obj.getBirthDate());
 
-            service.save(updating);
+            service.save(updating.get());
         }
     }
 
     @Override
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable int id) {
-        service.delete(service.findById(id));
+        Optional<Owner> deleting = service.findById(id);
+        deleting.ifPresent(owner -> service.delete(owner));
     }
 }

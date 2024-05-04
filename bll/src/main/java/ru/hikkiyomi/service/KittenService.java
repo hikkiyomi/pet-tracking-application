@@ -6,6 +6,7 @@ import ru.hikkiyomi.dao.KittenDao;
 import ru.hikkiyomi.model.Kitten;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class KittenService implements CommonService<Kitten> {
@@ -17,8 +18,8 @@ public class KittenService implements CommonService<Kitten> {
     }
 
     @Override
-    public Kitten findById(int id) {
-        return (Kitten) dao.findById(id);
+    public Optional<Kitten> findById(int id) {
+        return Optional.ofNullable(dao.findById(id));
     }
 
     @Override

@@ -30,7 +30,7 @@ public class DaoTests {
                 )
         );
 
-        assertEquals("ok", service.findById(1).getName());
+        assertEquals("ok", service.findById(1).get().getName());
     }
 
     @Test
@@ -67,8 +67,8 @@ public class DaoTests {
                 )
         );
 
-        assertEquals("aaaaaaaaaaa", service.findById(1).getName());
-        assertEquals(Color.GREEN, service.findById(1).getColor());
+        assertEquals("aaaaaaaaaaa", service.findById(1).get().getName());
+        assertEquals(Color.GREEN, service.findById(1).get().getColor());
     }
 
     @Test

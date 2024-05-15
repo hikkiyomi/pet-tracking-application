@@ -48,7 +48,7 @@ public class KittenController implements BasicController<KittenDto> {
 
     @Override
     @GetMapping("/get/{id}")
-    public KittenDto getById(@PathVariable int id) {
+    public KittenDto getById(@PathVariable Long id) {
         return new KittenDto(service.findById(id));
     }
 
@@ -65,7 +65,7 @@ public class KittenController implements BasicController<KittenDto> {
 
     @Override
     @PutMapping("/update/{id}")
-    public void update(@PathVariable int id, @RequestBody KittenDto obj) {
+    public void update(@PathVariable Long id, @RequestBody KittenDto obj) {
         Optional<Kitten> updating = service.findById(id);
 
         if (updating.isPresent()) {
@@ -85,7 +85,7 @@ public class KittenController implements BasicController<KittenDto> {
 
     @Override
     @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable int id) {
+    public void delete(@PathVariable Long id) {
         Optional<Kitten> deleting = service.findById(id);
         deleting.ifPresent(kitten -> service.delete(kitten));
     }

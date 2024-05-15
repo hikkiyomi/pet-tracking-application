@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface BasicController<T> {
     ResponseEntity create(T obj);
-    T getById(int id);
+    T getById(Long id);
     List<T> getAll();
-    void update(int id, T obj);
-    void delete(int id);
+    void update(Long id, T obj);
+    void delete(Long id);
 }

@@ -44,7 +44,7 @@ public class OwnerController implements BasicController<OwnerDto> {
 
     @Override
     @GetMapping("/get/{id}")
-    public OwnerDto getById(@PathVariable int id) {
+    public OwnerDto getById(@PathVariable Long id) {
         return new OwnerDto(service.findById(id));
     }
 
@@ -61,7 +61,7 @@ public class OwnerController implements BasicController<OwnerDto> {
 
     @Override
     @PutMapping("/update/{id}")
-    public void update(@PathVariable int id, @RequestBody OwnerDto obj) {
+    public void update(@PathVariable Long id, @RequestBody OwnerDto obj) {
         Optional<Owner> updating = service.findById(id);
 
         if (updating.isPresent()) {
@@ -85,7 +85,7 @@ public class OwnerController implements BasicController<OwnerDto> {
 
     @Override
     @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable int id) {
+    public void delete(@PathVariable Long id) {
         Optional<Owner> deleting = service.findById(id);
         deleting.ifPresent(owner -> service.delete(owner));
     }

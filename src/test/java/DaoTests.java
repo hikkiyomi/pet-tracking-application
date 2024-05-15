@@ -12,6 +12,7 @@ import ru.hikkiyomi.service.CommonService;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -24,13 +25,13 @@ public class DaoTests {
         CommonService<Owner> service = new OwnerService(ownerDao);
 
         when(ownerDao.findById(1)).thenReturn(
-                new Owner(
+                Optional.of(new Owner(
                         "ok",
                         Date.valueOf(LocalDate.of(1986, 4, 26))
-                )
+                ))
         );
 
-        assertEquals("ok", service.findById(1).get().getName());
+        assertEquals("ok", service.findById(1L).get().getName());
     }
 
     @Test
@@ -59,16 +60,16 @@ public class DaoTests {
         CommonService<Kitten> service = new KittenService(kittenDao);
 
         when(kittenDao.findById(1)).thenReturn(
-                new Kitten(
+                Optional.of(new Kitten(
                         "aaaaaaaaaaa",
                         Date.valueOf(LocalDate.of(1234, 1, 1)),
                         Breed.BURMESE,
                         Color.GREEN
-                )
+                ))
         );
 
-        assertEquals("aaaaaaaaaaa", service.findById(1).get().getName());
-        assertEquals(Color.GREEN, service.findById(1).get().getColor());
+        assertEquals("aaaaaaaaaaa", service.findById(1L).get().getName());
+        assertEquals(Color.GREEN, service.findById(1L).get().getColor());
     }
 
     @Test

@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Data
 public class OwnerDto {
-    private int id;
+    private Long id;
     private String name;
     private Date birthDate;
     private List<SimpleKitten> kittens = new ArrayList<>();

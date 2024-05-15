@@ -7,5 +7,5 @@ import ru.hikkiyomi.model.Kitten;
 @Repository
 public interface KittenDao extends Dao<Kitten>, JpaRepository<Kitten, Integer> {
     @Override
-    Kitten findById(int id);
+    Kitten findById(Long id);
 }

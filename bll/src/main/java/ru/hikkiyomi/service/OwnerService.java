@@ -18,7 +18,7 @@ public class OwnerService implements CommonService<Owner> {
     }
 
     @Override
-    public Optional<Owner> findById(int id) {
+    public Optional<Owner> findById(Long id) {
         return Optional.ofNullable(dao.findById(id));
     }
 

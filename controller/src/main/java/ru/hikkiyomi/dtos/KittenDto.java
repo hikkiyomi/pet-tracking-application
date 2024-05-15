@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Data
 public class KittenDto {
-    private int id;
+    private Long id;
     private String name;
     private Date birthdate;
     private Breed breed;

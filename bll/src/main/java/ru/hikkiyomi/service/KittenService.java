@@ -19,7 +19,7 @@ public class KittenService implements CommonService<Kitten> {
 
     @Override
     public Optional<Kitten> findById(Long id) {
-        return Optional.ofNullable(dao.findById(id));
+        return dao.findById(id);
     }
 
     @Override

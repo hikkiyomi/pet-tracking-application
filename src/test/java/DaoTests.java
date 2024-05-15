@@ -24,11 +24,10 @@ public class DaoTests {
         OwnerDao ownerDao = mock(OwnerDao.class);
         CommonService<Owner> service = new OwnerService(ownerDao);
 
-        when(ownerDao.findById(1)).thenReturn(
+        when(ownerDao.findById(1L)).thenReturn(
                 Optional.of(new Owner(
                         "ok",
-                        Date.valueOf(LocalDate.of(1986, 4, 26))
-                ))
+                        Date.valueOf(LocalDate.of(1986, 4, 26))))
         );
 
         assertEquals("ok", service.findById(1L).get().getName());
@@ -59,7 +58,7 @@ public class DaoTests {
         KittenDao kittenDao = mock(KittenDao.class);
         CommonService<Kitten> service = new KittenService(kittenDao);
 
-        when(kittenDao.findById(1)).thenReturn(
+        when(kittenDao.findById(1L)).thenReturn(
                 Optional.of(new Kitten(
                         "aaaaaaaaaaa",
                         Date.valueOf(LocalDate.of(1234, 1, 1)),

@@ -5,7 +5,5 @@ import org.springframework.stereotype.Repository;
 import ru.hikkiyomi.model.Owner;
 
 @Repository
-public interface OwnerDao extends Dao<Owner>, JpaRepository<Owner, Integer> {
-    @Override
-    Owner findById(Long id);
+public interface OwnerDao extends JpaRepository<Owner, Long> {
 }

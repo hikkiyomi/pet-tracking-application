@@ -5,7 +5,5 @@ import org.springframework.stereotype.Repository;
 import ru.hikkiyomi.model.Kitten;
 
 @Repository
-public interface KittenDao extends Dao<Kitten>, JpaRepository<Kitten, Integer> {
-    @Override
-    Kitten findById(Long id);
+public interface KittenDao extends JpaRepository<Kitten, Long> {
 }

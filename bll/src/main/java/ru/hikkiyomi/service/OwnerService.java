@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class OwnerService implements CommonService<Owner> {
+public class OwnerService implements CommonCrudService<Owner> {
     @Autowired
     private OwnerDao dao;
 

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class KittenService implements CommonService<Kitten> {
+public class KittenService implements CommonCrudService<Kitten> {
     @Autowired
     private KittenDao dao;
 

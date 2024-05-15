@@ -7,7 +7,7 @@ import ru.hikkiyomi.model.Kitten;
 import ru.hikkiyomi.model.Owner;
 import ru.hikkiyomi.service.KittenService;
 import ru.hikkiyomi.service.OwnerService;
-import ru.hikkiyomi.service.CommonService;
+import ru.hikkiyomi.service.CommonCrudService;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -22,7 +22,7 @@ public class DaoTests {
     @Test
     public void ShouldBeFetchedRightOwner() {
         OwnerDao ownerDao = mock(OwnerDao.class);
-        CommonService<Owner> service = new OwnerService(ownerDao);
+        CommonCrudService<Owner> service = new OwnerService(ownerDao);
 
         when(ownerDao.findById(1L)).thenReturn(
                 Optional.of(new Owner(
@@ -36,7 +36,7 @@ public class DaoTests {
     @Test
     public void ShouldFetchRightCatOfSomeOwner() {
         OwnerDao ownerDao = mock(OwnerDao.class);
-        CommonService<Owner> service = new OwnerService(ownerDao);
+        CommonCrudService<Owner> service = new OwnerService(ownerDao);
         Owner owner = new Owner("me", Date.valueOf(LocalDate.of(2019, 1, 1)));
 
         owner.addKitten(
@@ -56,7 +56,7 @@ public class DaoTests {
     @Test
     public void ShouldBeFetchedRightKitten() {
         KittenDao kittenDao = mock(KittenDao.class);
-        CommonService<Kitten> service = new KittenService(kittenDao);
+        CommonCrudService<Kitten> service = new KittenService(kittenDao);
 
         when(kittenDao.findById(1L)).thenReturn(
                 Optional.of(new Kitten(
@@ -74,7 +74,7 @@ public class DaoTests {
     @Test
     public void KittenShouldHaveRightOwner() {
         KittenDao kittenDao = mock(KittenDao.class);
-        CommonService<Kitten> service = new KittenService(kittenDao);
+        CommonCrudService<Kitten> service = new KittenService(kittenDao);
         Owner someOwner = new Owner("yeah", Date.valueOf(LocalDate.of(2900, 1, 1)));
 
         Kitten someKitten = new Kitten(

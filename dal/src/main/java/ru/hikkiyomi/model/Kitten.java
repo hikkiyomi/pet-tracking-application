@@ -21,7 +21,7 @@ public class Kitten {
     private String name;
 
     @Column(name = "birth_date")
-    private Date birthDate;
+    private Date birthdate;
 
     @Column(name = "breed")
     @Enumerated(value = EnumType.STRING)
@@ -47,9 +47,9 @@ public class Kitten {
 
     public Kitten() {}
 
-    public Kitten(String name, Date birthDate, Breed breed, Color color) {
+    public Kitten(String name, Date birthdate, Breed breed, Color color) {
         this.name = name;
-        this.birthDate = birthDate;
+        this.birthdate = birthdate;
         this.breed = breed;
         this.color = color;
         this.friends = new ArrayList<>();

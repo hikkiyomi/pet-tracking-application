@@ -70,7 +70,7 @@ public class KittenController implements BasicController<KittenDto> {
 
         if (updating.isPresent()) {
             if (obj.getName() != null) updating.get().setName(obj.getName());
-            if (obj.getBirthdate() != null) updating.get().setBirthDate(obj.getBirthdate());
+            if (obj.getBirthdate() != null) updating.get().setBirthdate(obj.getBirthdate());
             if (obj.getBreed() != null) updating.get().setBreed(obj.getBreed());
             if (obj.getColor() != null) updating.get().setColor(obj.getColor());
 

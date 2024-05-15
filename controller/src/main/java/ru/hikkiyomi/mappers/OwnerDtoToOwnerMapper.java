@@ -11,7 +11,7 @@ public class OwnerDtoToOwnerMapper implements BasicMapper<OwnerDto, Owner> {
         Owner owner = new Owner();
 
         owner.setName(ownerDto.getName());
-        owner.setBirthDate(ownerDto.getBirthDate());
+        owner.setBirthdate(ownerDto.getBirthdate());
         owner.setKittens(new ArrayList<>());
 
         return owner;

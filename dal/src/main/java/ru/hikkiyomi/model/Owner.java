@@ -20,16 +20,16 @@ public class Owner {
     private String name;
 
     @Column(name = "birth_date")
-    private Date birthDate;
+    private Date birthdate;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Kitten> kittens;
 
     public Owner() {}
 
-    public Owner(String name, Date birthDate) {
+    public Owner(String name, Date birthdate) {
         this.name = name;
-        this.birthDate = birthDate;
+        this.birthdate = birthdate;
         this.kittens = new ArrayList<>();
     }
 

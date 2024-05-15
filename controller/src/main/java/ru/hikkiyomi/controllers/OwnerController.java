@@ -66,7 +66,7 @@ public class OwnerController implements BasicController<OwnerDto> {
 
         if (updating.isPresent()) {
             if (obj.getName() != null) updating.get().setName(obj.getName());
-            if (obj.getBirthDate() != null) updating.get().setBirthDate(obj.getBirthDate());
+            if (obj.getBirthdate() != null) updating.get().setBirthdate(obj.getBirthdate());
 
             if (!obj.getKittens().isEmpty()) {
                 List<Kitten> newKittens = new ArrayList<>();

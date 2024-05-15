@@ -12,7 +12,7 @@ import java.util.Optional;
 public class OwnerDto {
     private Long id;
     private String name;
-    private Date birthDate;
+    private Date birthdate;
     private List<SimpleKitten> kittens = new ArrayList<>();
 
     public OwnerDto() {}
@@ -24,7 +24,7 @@ public class OwnerDto {
 
         this.id = owner.get().getId();
         this.name = owner.get().getName();
-        this.birthDate = owner.get().getBirthDate();
+        this.birthdate = owner.get().getBirthdate();
 
         owner.get().getKittens().forEach(kitten -> this.kittens.add(new SimpleKitten(kitten.getId(), kitten.getName())));
     }

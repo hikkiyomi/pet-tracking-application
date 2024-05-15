@@ -11,7 +11,7 @@ public class KittenDtoToKittenMapper implements BasicMapper<KittenDto, Kitten> {
         Kitten kitten = new Kitten();
 
         kitten.setName(kittenDto.getName());
-        kitten.setBirthDate(kittenDto.getBirthdate());
+        kitten.setBirthdate(kittenDto.getBirthdate());
         kitten.setBreed(kittenDto.getBreed());
         kitten.setColor(kittenDto.getColor());
         kitten.setFriends(new ArrayList<>());

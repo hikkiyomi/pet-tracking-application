@@ -29,7 +29,7 @@ public class KittenDto {
 
         this.id = kitten.get().getId();
         this.name = kitten.get().getName();
-        this.birthdate = kitten.get().getBirthDate();
+        this.birthdate = kitten.get().getBirthdate();
         this.breed = kitten.get().getBreed();
         this.color = kitten.get().getColor();
 

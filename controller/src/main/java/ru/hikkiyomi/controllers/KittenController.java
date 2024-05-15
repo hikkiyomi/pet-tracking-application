@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.hikkiyomi.converters.KittenDtoToKittenConverter;
-import ru.hikkiyomi.converters.OwnerDtoToOwnerConverter;
+import ru.hikkiyomi.mappers.KittenDtoToKittenMapper;
+import ru.hikkiyomi.mappers.OwnerDtoToOwnerMapper;
 import ru.hikkiyomi.dtos.KittenDto;
 import ru.hikkiyomi.dtos.SimpleKitten;
 import ru.hikkiyomi.model.Kitten;
@@ -26,13 +26,13 @@ public class KittenController implements BasicController<KittenDto> {
     @Autowired
     private OwnerService ownerService;
 
-    private KittenDtoToKittenConverter converter = new KittenDtoToKittenConverter();
-    private final OwnerDtoToOwnerConverter ownerConverter = new OwnerDtoToOwnerConverter();
+    private final KittenDtoToKittenMapper converter = new KittenDtoToKittenMapper();
+    private final OwnerDtoToOwnerMapper ownerConverter = new OwnerDtoToOwnerMapper();
 
     @Override
     @PostMapping("/create")
-    public ResponseEntity create(@RequestBody KittenDto obj) {
-        Kitten kitten = converter.convert(obj);
+    public ResponseEntity<HttpStatus> create(@RequestBody KittenDto obj) {
+        Kitten kitten = converter.map(obj);
         Optional<Owner> potentialOwner = ownerService.findById(obj.getOwner().id());
 
         for (SimpleKitten sk : obj.getFriends()) {

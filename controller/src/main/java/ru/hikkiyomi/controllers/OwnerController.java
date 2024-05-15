@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.hikkiyomi.converters.OwnerDtoToOwnerConverter;
+import ru.hikkiyomi.mappers.OwnerDtoToOwnerMapper;
 import ru.hikkiyomi.dtos.OwnerDto;
 import ru.hikkiyomi.dtos.SimpleKitten;
 import ru.hikkiyomi.model.Kitten;
@@ -25,12 +25,12 @@ public class OwnerController implements BasicController<OwnerDto> {
     @Autowired
     private KittenService kittenService;
 
-    private OwnerDtoToOwnerConverter converter = new OwnerDtoToOwnerConverter();
+    private final OwnerDtoToOwnerMapper converter = new OwnerDtoToOwnerMapper();
 
     @Override
     @PostMapping("/create")
-    public ResponseEntity create(@RequestBody OwnerDto obj) {
-        Owner owner = converter.convert(obj);
+    public ResponseEntity<HttpStatus> create(@RequestBody OwnerDto obj) {
+        Owner owner = converter.map(obj);
 
         for (SimpleKitten sk : obj.getKittens()) {
             Optional<Kitten> potentialKitten = kittenService.findById(sk.id());

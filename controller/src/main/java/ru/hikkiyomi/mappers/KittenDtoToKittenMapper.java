@@ -1,13 +1,13 @@
-package ru.hikkiyomi.converters;
+package ru.hikkiyomi.mappers;
 
 import ru.hikkiyomi.dtos.KittenDto;
 import ru.hikkiyomi.model.Kitten;
 
 import java.util.ArrayList;
 
-public class KittenDtoToKittenConverter implements BasicConverter<KittenDto, Kitten> {
+public class KittenDtoToKittenMapper implements BasicMapper<KittenDto, Kitten> {
     @Override
-    public Kitten convert(KittenDto kittenDto) {
+    public Kitten map(KittenDto kittenDto) {
         Kitten kitten = new Kitten();
 
         kitten.setName(kittenDto.getName());

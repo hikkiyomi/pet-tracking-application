@@ -3,6 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>ru.hikkiyomi</groupId>
         <artifactId>javatech</artifactId>
@@ -10,6 +11,13 @@
     </parent>
 
     <artifactId>lab2</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>dal</module>
+        <module>bll</module>
+        <module>controller</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -18,21 +26,6 @@
     </properties>
 
     <dependencies>
-
-        <dependency>
-            <groupId>ru.hikkiyomi</groupId>
-            <artifactId>dal</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>ru.hikkiyomi</groupId>
-            <artifactId>bll</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>

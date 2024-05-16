@@ -29,11 +29,7 @@ public class AuthService {
             String password,
             Role role
     ) {
-        User user = User.builder()
-                .username(username)
-                .password(passwordEncoder.encode(password))
-                .role(role)
-                .build();
+        User user = new User(username, passwordEncoder.encode(password), role);
 
         userService.save(user);
 

@@ -2,6 +2,7 @@ package ru.hikkiyomi.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -47,7 +48,9 @@ public class WebSecurityConfig {
                 .addFilterBefore(jwtAuthFilter, ExceptionTranslationFilter.class)
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/**").authenticated());
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET).hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/**").hasRole("ADMIN"));
 
         return http.build();
     }

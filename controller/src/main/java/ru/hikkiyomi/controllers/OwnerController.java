@@ -30,63 +30,87 @@ public class OwnerController implements BasicController<OwnerDto> {
     @Override
     @PostMapping("/create")
     public ResponseEntity<HttpStatus> create(@RequestBody OwnerDto obj) {
-        Owner owner = converter.map(obj);
+        try {
+            Owner owner = converter.map(obj);
 
-        for (SimpleKitten sk : obj.getKittens()) {
-            Optional<Kitten> potentialKitten = kittenService.findById(sk.id());
-            potentialKitten.ifPresent(owner::addKitten);
+            for (SimpleKitten sk : obj.getKittens()) {
+                Optional<Kitten> potentialKitten = kittenService.findById(sk.id());
+                potentialKitten.ifPresent(owner::addKitten);
+            }
+
+            service.save(owner);
+
+            return ResponseEntity.ok(HttpStatus.CREATED);
+        } catch (Exception ignored) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-
-        service.save(owner);
-
-        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @Override
     @GetMapping("/get/{id}")
-    public OwnerDto getById(@PathVariable Long id) {
-        return new OwnerDto(service.findById(id));
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        try {
+            return new ResponseEntity<>(new OwnerDto(service.findById(id)), HttpStatus.OK);
+        } catch (Exception ignored) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @Override
     @GetMapping("/get")
-    public List<OwnerDto> getAll() {
-        List<Owner> owners = service.findAll();
-        List<OwnerDto> dtos = new ArrayList<>();
+    public ResponseEntity<?> getAll() {
+        try {
+            List<Owner> owners = service.findAll();
+            List<OwnerDto> dtos = new ArrayList<>();
 
-        owners.forEach(owner -> dtos.add(new OwnerDto(Optional.of(owner))));
+            owners.forEach(owner -> dtos.add(new OwnerDto(Optional.of(owner))));
 
-        return dtos;
+            return new ResponseEntity<>(dtos, HttpStatus.OK);
+        } catch (Exception ignored) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @Override
     @PutMapping("/update/{id}")
-    public void update(@PathVariable Long id, @RequestBody OwnerDto obj) {
-        Optional<Owner> updating = service.findById(id);
+    public ResponseEntity<HttpStatus> update(@PathVariable Long id, @RequestBody OwnerDto obj) {
+        try {
+            Optional<Owner> updating = service.findById(id);
 
-        if (updating.isPresent()) {
-            if (obj.getName() != null) updating.get().setName(obj.getName());
-            if (obj.getBirthdate() != null) updating.get().setBirthdate(obj.getBirthdate());
+            if (updating.isPresent()) {
+                if (obj.getName() != null) updating.get().setName(obj.getName());
+                if (obj.getBirthdate() != null) updating.get().setBirthdate(obj.getBirthdate());
 
-            if (!obj.getKittens().isEmpty()) {
-                List<Kitten> newKittens = new ArrayList<>();
+                if (!obj.getKittens().isEmpty()) {
+                    List<Kitten> newKittens = new ArrayList<>();
 
-                for (SimpleKitten sk : obj.getKittens()) {
-                    Optional<Kitten> potentialKitten = kittenService.findById(sk.id());
-                    potentialKitten.ifPresent(newKittens::add);
+                    for (SimpleKitten sk : obj.getKittens()) {
+                        Optional<Kitten> potentialKitten = kittenService.findById(sk.id());
+                        potentialKitten.ifPresent(newKittens::add);
+                    }
+
+                    updating.get().setKittens(newKittens);
                 }
 
-                updating.get().setKittens(newKittens);
+                service.save(updating.get());
             }
 
-            service.save(updating.get());
+            return ResponseEntity.ok(HttpStatus.OK);
+        } catch (Exception ignored) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
     @Override
     @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable Long id) {
-        Optional<Owner> deleting = service.findById(id);
-        deleting.ifPresent(owner -> service.delete(owner));
+    public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
+        try {
+            Optional<Owner> deleting = service.findById(id);
+            deleting.ifPresent(owner -> service.delete(owner));
+
+            return ResponseEntity.ok(HttpStatus.OK);
+        } catch (Exception ignored) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 }

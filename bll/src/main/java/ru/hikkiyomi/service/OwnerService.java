@@ -17,6 +17,10 @@ public class OwnerService implements CommonCrudService<Owner> {
         this.dao = dao;
     }
 
+    public Optional<Owner> findByName(String name) {
+        return dao.findByName(name);
+    }
+
     @Override
     public Optional<Owner> findById(Long id) {
         return dao.findById(id);

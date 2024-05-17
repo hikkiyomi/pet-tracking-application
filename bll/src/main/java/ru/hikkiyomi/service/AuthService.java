@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.hikkiyomi.dtos.AuthResponse;
@@ -24,13 +25,15 @@ public class AuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private UserDetailsService userDetailsService;
+
     public AuthResponse signUp(
             String username,
             String password,
             Role role
     ) {
         User user = new User(username, passwordEncoder.encode(password), role);
-
         userService.save(user);
 
         String token = jwtService.generateToken(user);
@@ -46,9 +49,7 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(username, password)
         );
 
-        UserDetailsServiceImpl provider = new UserDetailsServiceImpl();
-        UserDetails userDetails = provider.loadUserByUsername(username);
-
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         String token = jwtService.generateToken(userDetails);
 
         return new AuthResponse(token);

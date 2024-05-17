@@ -1,5 +1,6 @@
 package ru.hikkiyomi.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,15 +12,18 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.ExceptionTranslationFilter;
-import ru.hikkiyomi.service.UserDetailsServiceImpl;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
+    @Autowired
+    private UserDetailsService userDetailsService;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -29,7 +33,7 @@ public class WebSecurityConfig {
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
 
-        daoAuthenticationProvider.setUserDetailsService(new UserDetailsServiceImpl());
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
 
         return daoAuthenticationProvider;
@@ -45,12 +49,14 @@ public class WebSecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthFilter, ExceptionTranslationFilter.class)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET).hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/**").hasRole("ADMIN"));
+                        .requestMatchers(HttpMethod.GET).hasAnyAuthority("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST).hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PUT).hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE).hasAuthority("ADMIN"));
 
         return http.build();
     }

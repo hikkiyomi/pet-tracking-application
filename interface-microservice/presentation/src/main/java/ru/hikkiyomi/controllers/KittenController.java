@@ -10,9 +10,7 @@ import ru.hikkiyomi.dtos.KittenDto;
 import ru.hikkiyomi.dtos.SimpleKitten;
 import ru.hikkiyomi.models.Kitten;
 import ru.hikkiyomi.models.Owner;
-import ru.hikkiyomi.services.AccessCheckService;
-import ru.hikkiyomi.services.KittenService;
-import ru.hikkiyomi.services.OwnerService;
+import ru.hikkiyomi.services.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +20,13 @@ import java.util.Optional;
 @RequestMapping("/kittens")
 public class KittenController implements BasicController<KittenDto> {
     @Autowired
-    private KittenService service;
+    private KittenProducerService kittenProducerService;
 
     @Autowired
-    private OwnerService ownerService;
+    private KittenConsumerService kittenConsumerService;
+
+    @Autowired
+    private OwnerConsumerService ownerConsumerService;
 
     @Autowired
     private AccessCheckService accessCheckService;
@@ -37,7 +38,7 @@ public class KittenController implements BasicController<KittenDto> {
     }
 
     private ResponseEntity<?> checkIfAccessGranted(Long id) {
-        Optional<Kitten> kitten = service.findById(id);
+        Optional<Kitten> kitten = kittenConsumerService.findById(id);
         String username = getPrincipalName();
 
         if (kitten.isEmpty()) {
@@ -58,15 +59,15 @@ public class KittenController implements BasicController<KittenDto> {
     public ResponseEntity<HttpStatus> create(@RequestBody KittenDto obj) {
         try {
             Kitten kitten = converter.map(obj);
-            Optional<Owner> owner = ownerService.findByName(getPrincipalName());
+            Optional<Owner> owner = ownerConsumerService.findByName(getPrincipalName());
 
             for (SimpleKitten sk : obj.getFriends()) {
-                Kitten friend = service.findById(sk.id()).get();
+                Kitten friend = kittenConsumerService.findById(sk.id()).get();
                 kitten.addFriend(friend);
             }
 
             kitten.setOwner(owner.get());
-            service.save(kitten);
+            kittenProducerService.post(kitten);
 
             return ResponseEntity.ok(HttpStatus.CREATED);
         } catch (Exception ignored) {
@@ -84,7 +85,7 @@ public class KittenController implements BasicController<KittenDto> {
                 return response;
             }
 
-            return new ResponseEntity<>(new KittenDto(service.findById(id)), HttpStatus.OK);
+            return new ResponseEntity<>(new KittenDto(kittenConsumerService.findById(id)), HttpStatus.OK);
         } catch (Exception ignored) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -94,7 +95,7 @@ public class KittenController implements BasicController<KittenDto> {
     @GetMapping("/get")
     public ResponseEntity<?> getAll() {
         try {
-            List<Kitten> kittens = service.findAll();
+            List<Kitten> kittens = kittenConsumerService.findAll();
             List<KittenDto> kittenDtos = new ArrayList<>();
 
             for (Kitten kitten : kittens) {
@@ -115,7 +116,7 @@ public class KittenController implements BasicController<KittenDto> {
     @PutMapping("/update/{id}")
     public ResponseEntity<HttpStatus> update(@PathVariable Long id, @RequestBody KittenDto obj) {
         try {
-            Optional<Kitten> updating = service.findById(id);
+            Optional<Kitten> updating = kittenConsumerService.findById(id);
 
             if (updating.isPresent()) {
                 if (obj.getName() != null) updating.get().setName(obj.getName());
@@ -124,11 +125,11 @@ public class KittenController implements BasicController<KittenDto> {
                 if (obj.getColor() != null) updating.get().setColor(obj.getColor());
 
                 if (obj.getOwner() != null) {
-                    Optional<Owner> potentialOwner = ownerService.findById(obj.getOwner().id());
+                    Optional<Owner> potentialOwner = ownerConsumerService.findById(obj.getOwner().id());
                     potentialOwner.ifPresent(owner -> updating.get().setOwner(owner));
                 }
 
-                service.save(updating.get());
+                kittenProducerService.put(updating.get());
             }
 
             return ResponseEntity.ok(HttpStatus.OK);
@@ -141,8 +142,8 @@ public class KittenController implements BasicController<KittenDto> {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
         try {
-            Optional<Kitten> deleting = service.findById(id);
-            deleting.ifPresent(kitten -> service.delete(kitten));
+            Optional<Kitten> deleting = kittenConsumerService.findById(id);
+            deleting.ifPresent(kitten -> kittenProducerService.delete(kitten));
 
             return ResponseEntity.ok(HttpStatus.OK);
         } catch (Exception ignored) {

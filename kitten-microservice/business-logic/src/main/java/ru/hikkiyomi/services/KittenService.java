@@ -1,6 +1,7 @@
 package ru.hikkiyomi.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import ru.hikkiyomi.repositories.KittenDao;
 import ru.hikkiyomi.models.Kitten;

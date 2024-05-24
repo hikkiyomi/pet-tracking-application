@@ -12,8 +12,8 @@ import ru.hikkiyomi.dtos.AuthResponse;
 import ru.hikkiyomi.dtos.UserDto;
 import ru.hikkiyomi.models.Owner;
 import ru.hikkiyomi.models.Role;
-import ru.hikkiyomi.services.AuthService;
-import ru.hikkiyomi.services.OwnerService;
+import ru.hikkiyomi.security.AuthService;
+import ru.hikkiyomi.services.OwnerProducerService;
 
 @RestController
 @RequestMapping("/auth")
@@ -22,7 +22,7 @@ public class AuthController {
     private AuthService authService;
 
     @Autowired
-    private OwnerService ownerService;
+    private OwnerProducerService ownerProducerService;
 
     @PostMapping("/signup")
     public AuthResponse signUp(@RequestBody UserDto user) {
@@ -33,7 +33,8 @@ public class AuthController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> createUser(@RequestBody UserDto user) {
         AuthResponse response = authService.signUp(user.getUsername(), user.getPassword(), Role.USER);
-        ownerService.save(new Owner(user.getUsername(), null));
+
+        ownerProducerService.post(new Owner(user.getUsername(), null));
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

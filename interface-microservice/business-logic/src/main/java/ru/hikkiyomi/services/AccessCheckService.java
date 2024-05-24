@@ -12,14 +12,14 @@ import java.util.Optional;
 @Service
 public class AccessCheckService {
     @Autowired
-    private KittenService kittenService;
+    private KittenConsumerService kittenConsumerService;
 
     @Autowired
-    private OwnerService ownerService;
+    private OwnerConsumerService ownerConsumerService;
 
     public ResponseEntity<?> hasAccess(String username, Kitten requestedKitten) {
-        Optional<Owner> owner = ownerService.findByName(username);
-        Optional<Kitten> kitten = kittenService.findById(requestedKitten.getId());
+        Optional<Owner> owner = ownerConsumerService.findByName(username);
+        Optional<Kitten> kitten = kittenConsumerService.findById(requestedKitten.getId());
 
         if (owner.isEmpty() || kitten.isEmpty()) {
             return new ResponseEntity<>("No such owner or kitten found", HttpStatus.BAD_REQUEST);

@@ -1,4 +1,4 @@
-package ru.hikkiyomi.services;
+package ru.hikkiyomi.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import ru.hikkiyomi.dtos.AuthResponse;
 import ru.hikkiyomi.models.Role;
 import ru.hikkiyomi.models.User;
+import ru.hikkiyomi.services.JwtService;
+import ru.hikkiyomi.services.UserService;
 
 @Service
 public class AuthService {

@@ -1,9 +1,11 @@
-package ru.hikkiyomi.services;
+package ru.hikkiyomi.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import ru.hikkiyomi.services.KittenConsumerService;
+import ru.hikkiyomi.services.OwnerConsumerService;
 import ru.hikkiyomi.models.Kitten;
 import ru.hikkiyomi.models.Owner;
 

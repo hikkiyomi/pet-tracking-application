@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.hikkiyomi.dtos.OwnerDto;
 import ru.hikkiyomi.models.Owner;
 import ru.hikkiyomi.services.OwnerConsumerService;
-import ru.hikkiyomi.services.OwnerProducerService;
+import ru.hikkiyomi.kafka.producers.OwnerProducerService;
 
 import java.util.Optional;
 

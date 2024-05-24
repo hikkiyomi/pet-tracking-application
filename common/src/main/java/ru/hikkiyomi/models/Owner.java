@@ -1,5 +1,6 @@
 package ru.hikkiyomi.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -23,6 +24,7 @@ public class Owner {
     private Date birthdate;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Kitten> kittens;
 
     public Owner() {}

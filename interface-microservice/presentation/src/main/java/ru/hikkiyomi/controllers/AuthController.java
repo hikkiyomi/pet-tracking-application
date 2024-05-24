@@ -13,7 +13,7 @@ import ru.hikkiyomi.dtos.UserDto;
 import ru.hikkiyomi.models.Owner;
 import ru.hikkiyomi.models.Role;
 import ru.hikkiyomi.security.AuthService;
-import ru.hikkiyomi.services.OwnerProducerService;
+import ru.hikkiyomi.kafka.producers.OwnerProducerService;
 
 @RestController
 @RequestMapping("/auth")

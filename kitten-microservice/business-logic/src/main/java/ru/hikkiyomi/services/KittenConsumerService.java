@@ -13,19 +13,19 @@ public class KittenConsumerService {
     @Autowired
     private KittenService kittenService;
 
-    @KafkaListener(topics = "${kafka.topics.create}", groupId = "kitten_group",
+    @KafkaListener(topics = "kitten.event.post", groupId = "kitten_group",
             containerFactory = "kittenKafkaListenerContainerFactory")
     public void post(Kitten kitten) {
         kittenService.save(kitten);
     }
 
-    @KafkaListener(topics = "${kafka.topics.update}", groupId = "kitten_group",
+    @KafkaListener(topics = "kitten.event.put", groupId = "kitten_group",
             containerFactory = "kittenKafkaListenerContainerFactory")
     public void put(Kitten kitten) {
         kittenService.save(kitten);
     }
 
-    @KafkaListener(topics = "${kafka.topics.delete}", groupId = "kitten_group",
+    @KafkaListener(topics = "kitten.event.delete", groupId = "kitten_group",
             containerFactory = "kittenKafkaListenerContainerFactory")
     public void delete(Kitten kitten) {
         kittenService.delete(kitten);

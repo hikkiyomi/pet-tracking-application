@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.hikkiyomi.kafka.OwnerProducerConfig;
 import ru.hikkiyomi.mappers.OwnerDtoToOwnerMapper;
 import ru.hikkiyomi.dtos.OwnerDto;
 import ru.hikkiyomi.dtos.SimpleKitten;
@@ -12,7 +11,7 @@ import ru.hikkiyomi.models.Kitten;
 import ru.hikkiyomi.models.Owner;
 import ru.hikkiyomi.services.KittenConsumerService;
 import ru.hikkiyomi.services.OwnerConsumerService;
-import ru.hikkiyomi.services.OwnerProducerService;
+import ru.hikkiyomi.kafka.producers.OwnerProducerService;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,5 +1,6 @@
 package ru.hikkiyomi.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
@@ -43,6 +44,7 @@ public class Kitten {
             inverseJoinColumns = { @JoinColumn(name = "friend_id") }
     )
     @ToString.Exclude
+    @JsonIgnore
     private List<Kitten> friends;
 
     public Kitten() {}

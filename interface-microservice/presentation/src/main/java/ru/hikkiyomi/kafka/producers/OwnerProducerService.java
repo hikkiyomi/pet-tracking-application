@@ -1,4 +1,4 @@
-package ru.hikkiyomi.services;
+package ru.hikkiyomi.kafka.producers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,13 +8,13 @@ import ru.hikkiyomi.models.Owner;
 
 @Service
 public class OwnerProducerService {
-    @Value("${kafka.topics.create}")
+    @Value("${kafka.topics.create.owner}")
     private String topicPost;
 
-    @Value("${kafka.topics.update}")
+    @Value("${kafka.topics.update.owner}")
     private String topicPut;
 
-    @Value("${kafka.topics.delete}")
+    @Value("${kafka.topics.delete.owner}")
     private String topicDelete;
 
     @Autowired

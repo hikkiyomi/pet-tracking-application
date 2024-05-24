@@ -5,12 +5,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import ru.hikkiyomi.services.KittenConsumerService;
+import ru.hikkiyomi.services.OwnerConsumerService;
+import ru.hikkiyomi.kafka.producers.KittenProducerService;
 import ru.hikkiyomi.mappers.KittenDtoToKittenMapper;
 import ru.hikkiyomi.dtos.KittenDto;
 import ru.hikkiyomi.dtos.SimpleKitten;
 import ru.hikkiyomi.models.Kitten;
 import ru.hikkiyomi.models.Owner;
-import ru.hikkiyomi.services.*;
+import ru.hikkiyomi.security.AccessCheckService;
 
 import java.util.ArrayList;
 import java.util.List;

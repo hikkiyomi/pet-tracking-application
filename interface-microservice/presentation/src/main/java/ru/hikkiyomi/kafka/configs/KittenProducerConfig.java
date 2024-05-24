@@ -1,4 +1,4 @@
-package ru.hikkiyomi.kafka;
+package ru.hikkiyomi.kafka.configs;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -9,18 +9,18 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import ru.hikkiyomi.models.Owner;
+import ru.hikkiyomi.models.Kitten;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class OwnerProducerConfig {
+public class KittenProducerConfig {
     @Value("${kafka.url}")
     private String address;
 
     @Bean
-    public ProducerFactory<String, Owner> ownerProducerFactory() {
+    public ProducerFactory<String, Kitten> kittenProducerFactory() {
         Map<String, Object> props = new HashMap<>();
 
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, address);
@@ -31,7 +31,7 @@ public class OwnerProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, Owner> ownerKafkaTemplate() {
-        return new KafkaTemplate<>(ownerProducerFactory());
+    public KafkaTemplate<String, Kitten> kittenKafkaTemplate() {
+        return new KafkaTemplate<>(kittenProducerFactory());
     }
 }

@@ -17,18 +17,21 @@ public class OwnerConsumerService {
             containerFactory = "ownerKafkaListenerContainerFactory")
     public void post(Owner owner) {
         ownerService.save(owner);
+        System.out.println("aaaa");
     }
 
     @KafkaListener(topics = "${kafka.topics.update.owner}", groupId = "owner_group",
             containerFactory = "ownerKafkaListenerContainerFactory")
     public void put(Owner owner) {
         ownerService.save(owner);
+        System.out.println("aaaa");
     }
 
     @KafkaListener(topics = "${kafka.topics.delete.owner}", groupId = "owner_group",
             containerFactory = "ownerKafkaListenerContainerFactory")
     public void delete(Owner owner) {
         ownerService.delete(owner);
+        System.out.println("aaaa");
     }
 
     public Optional<Owner> findById(Long id) {

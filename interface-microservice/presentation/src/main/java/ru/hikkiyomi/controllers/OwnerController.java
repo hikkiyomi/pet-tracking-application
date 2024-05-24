@@ -9,9 +9,9 @@ import ru.hikkiyomi.dtos.OwnerDto;
 import ru.hikkiyomi.dtos.SimpleKitten;
 import ru.hikkiyomi.models.Kitten;
 import ru.hikkiyomi.models.Owner;
-import ru.hikkiyomi.services.KittenConsumerService;
-import ru.hikkiyomi.services.OwnerConsumerService;
+import ru.hikkiyomi.services.KittenService;
 import ru.hikkiyomi.kafka.producers.OwnerProducerService;
+import ru.hikkiyomi.services.OwnerService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +24,10 @@ public class OwnerController implements BasicController<OwnerDto> {
     private OwnerProducerService ownerProducerService;
 
     @Autowired
-    private OwnerConsumerService ownerConsumerService;
+    private OwnerService ownerService;
 
     @Autowired
-    private KittenConsumerService kittenConsumerService;
+    private KittenService kittenService;
 
     private final OwnerDtoToOwnerMapper converter = new OwnerDtoToOwnerMapper();
 
@@ -38,7 +38,7 @@ public class OwnerController implements BasicController<OwnerDto> {
             Owner owner = converter.map(obj);
 
             for (SimpleKitten sk : obj.getKittens()) {
-                Optional<Kitten> potentialKitten = kittenConsumerService.findById(sk.id());
+                Optional<Kitten> potentialKitten = kittenService.findById(sk.id());
                 potentialKitten.ifPresent(owner::addKitten);
             }
 
@@ -54,7 +54,7 @@ public class OwnerController implements BasicController<OwnerDto> {
     @GetMapping("/get/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
         try {
-            return new ResponseEntity<>(new OwnerDto(ownerConsumerService.findById(id)), HttpStatus.OK);
+            return new ResponseEntity<>(new OwnerDto(ownerService.findById(id)), HttpStatus.OK);
         } catch (Exception ignored) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -64,7 +64,7 @@ public class OwnerController implements BasicController<OwnerDto> {
     @GetMapping("/get")
     public ResponseEntity<?> getAll() {
         try {
-            List<Owner> owners = ownerConsumerService.findAll();
+            List<Owner> owners = ownerService.findAll();
             List<OwnerDto> dtos = new ArrayList<>();
 
             owners.forEach(owner -> dtos.add(new OwnerDto(Optional.of(owner))));
@@ -79,7 +79,7 @@ public class OwnerController implements BasicController<OwnerDto> {
     @PutMapping("/update/{id}")
     public ResponseEntity<HttpStatus> update(@PathVariable Long id, @RequestBody OwnerDto obj) {
         try {
-            Optional<Owner> updating = ownerConsumerService.findById(id);
+            Optional<Owner> updating = ownerService.findById(id);
 
             if (updating.isPresent()) {
                 if (obj.getName() != null) updating.get().setName(obj.getName());
@@ -89,7 +89,7 @@ public class OwnerController implements BasicController<OwnerDto> {
                     List<Kitten> newKittens = new ArrayList<>();
 
                     for (SimpleKitten sk : obj.getKittens()) {
-                        Optional<Kitten> potentialKitten = kittenConsumerService.findById(sk.id());
+                        Optional<Kitten> potentialKitten = kittenService.findById(sk.id());
                         potentialKitten.ifPresent(newKittens::add);
                     }
 
@@ -109,7 +109,7 @@ public class OwnerController implements BasicController<OwnerDto> {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
         try {
-            Optional<Owner> deleting = ownerConsumerService.findById(id);
+            Optional<Owner> deleting = ownerService.findById(id);
             deleting.ifPresent(owner -> ownerProducerService.delete(owner));
 
             return ResponseEntity.ok(HttpStatus.OK);

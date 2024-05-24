@@ -4,24 +4,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ru.hikkiyomi.services.KittenConsumerService;
-import ru.hikkiyomi.services.OwnerConsumerService;
+import ru.hikkiyomi.services.KittenService;
 import ru.hikkiyomi.models.Kitten;
 import ru.hikkiyomi.models.Owner;
+import ru.hikkiyomi.services.OwnerService;
 
 import java.util.Optional;
 
 @Service
 public class AccessCheckService {
     @Autowired
-    private KittenConsumerService kittenConsumerService;
+    private KittenService kittenService;
 
     @Autowired
-    private OwnerConsumerService ownerConsumerService;
+    private OwnerService ownerService;
 
     public ResponseEntity<?> hasAccess(String username, Kitten requestedKitten) {
-        Optional<Owner> owner = ownerConsumerService.findByName(username);
-        Optional<Kitten> kitten = kittenConsumerService.findById(requestedKitten.getId());
+        Optional<Owner> owner = ownerService.findByName(username);
+        Optional<Kitten> kitten = kittenService.findById(requestedKitten.getId());
 
         if (owner.isEmpty() || kitten.isEmpty()) {
             return new ResponseEntity<>("No such owner or kitten found", HttpStatus.BAD_REQUEST);

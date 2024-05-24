@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hikkiyomi.dtos.OwnerDto;
 import ru.hikkiyomi.models.Owner;
-import ru.hikkiyomi.services.OwnerConsumerService;
 import ru.hikkiyomi.kafka.producers.OwnerProducerService;
+import ru.hikkiyomi.services.OwnerService;
 
 import java.util.Optional;
 
@@ -20,7 +20,7 @@ import java.util.Optional;
 @RequestMapping("/profile")
 public class ProfileUpdateController {
     @Autowired
-    private OwnerConsumerService ownerConsumerService;
+    private OwnerService ownerService;
 
     @Autowired
     private OwnerProducerService ownerProducerService;
@@ -29,7 +29,7 @@ public class ProfileUpdateController {
     @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<HttpStatus> updateBirthdate(@RequestBody OwnerDto ownerDto) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        Optional<Owner> owner = ownerConsumerService.findByName(username);
+        Optional<Owner> owner = ownerService.findByName(username);
 
         if (owner.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

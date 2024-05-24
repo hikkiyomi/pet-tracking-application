@@ -15,6 +15,7 @@
     <modules>
         <module>data-access</module>
         <module>business-logic</module>
+        <module>presentation</module>
     </modules>
 
     <properties>

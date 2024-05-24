@@ -17,18 +17,21 @@ public class KittenConsumerService {
             containerFactory = "kittenKafkaListenerContainerFactory")
     public void post(Kitten kitten) {
         kittenService.save(kitten);
+        System.out.println("aaaa");
     }
 
     @KafkaListener(topics = "${kafka.topics.update.kitten}", groupId = "kitten_group",
             containerFactory = "kittenKafkaListenerContainerFactory")
     public void put(Kitten kitten) {
         kittenService.save(kitten);
+        System.out.println("aaaa");
     }
 
     @KafkaListener(topics = "${kafka.topics.delete.kitten}", groupId = "kitten_group",
             containerFactory = "kittenKafkaListenerContainerFactory")
     public void delete(Kitten kitten) {
         kittenService.delete(kitten);
+        System.out.println("aaaa");
     }
 
     public Optional<Kitten> findById(Long id) {

@@ -5,8 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import ru.hikkiyomi.services.KittenConsumerService;
-import ru.hikkiyomi.services.OwnerConsumerService;
+import ru.hikkiyomi.services.KittenService;
 import ru.hikkiyomi.kafka.producers.KittenProducerService;
 import ru.hikkiyomi.mappers.KittenDtoToKittenMapper;
 import ru.hikkiyomi.dtos.KittenDto;
@@ -14,6 +13,7 @@ import ru.hikkiyomi.dtos.SimpleKitten;
 import ru.hikkiyomi.models.Kitten;
 import ru.hikkiyomi.models.Owner;
 import ru.hikkiyomi.security.AccessCheckService;
+import ru.hikkiyomi.services.OwnerService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +26,10 @@ public class KittenController implements BasicController<KittenDto> {
     private KittenProducerService kittenProducerService;
 
     @Autowired
-    private KittenConsumerService kittenConsumerService;
+    private KittenService kittenService;
 
     @Autowired
-    private OwnerConsumerService ownerConsumerService;
+    private OwnerService ownerService;
 
     @Autowired
     private AccessCheckService accessCheckService;
@@ -41,7 +41,7 @@ public class KittenController implements BasicController<KittenDto> {
     }
 
     private ResponseEntity<?> checkIfAccessGranted(Long id) {
-        Optional<Kitten> kitten = kittenConsumerService.findById(id);
+        Optional<Kitten> kitten = kittenService.findById(id);
         String username = getPrincipalName();
 
         if (kitten.isEmpty()) {
@@ -62,10 +62,10 @@ public class KittenController implements BasicController<KittenDto> {
     public ResponseEntity<HttpStatus> create(@RequestBody KittenDto obj) {
         try {
             Kitten kitten = converter.map(obj);
-            Optional<Owner> owner = ownerConsumerService.findByName(getPrincipalName());
+            Optional<Owner> owner = ownerService.findByName(getPrincipalName());
 
             for (SimpleKitten sk : obj.getFriends()) {
-                Kitten friend = kittenConsumerService.findById(sk.id()).get();
+                Kitten friend = kittenService.findById(sk.id()).get();
                 kitten.addFriend(friend);
             }
 
@@ -88,7 +88,7 @@ public class KittenController implements BasicController<KittenDto> {
                 return response;
             }
 
-            return new ResponseEntity<>(new KittenDto(kittenConsumerService.findById(id)), HttpStatus.OK);
+            return new ResponseEntity<>(new KittenDto(kittenService.findById(id)), HttpStatus.OK);
         } catch (Exception ignored) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -98,7 +98,7 @@ public class KittenController implements BasicController<KittenDto> {
     @GetMapping("/get")
     public ResponseEntity<?> getAll() {
         try {
-            List<Kitten> kittens = kittenConsumerService.findAll();
+            List<Kitten> kittens = kittenService.findAll();
             List<KittenDto> kittenDtos = new ArrayList<>();
 
             for (Kitten kitten : kittens) {
@@ -119,7 +119,7 @@ public class KittenController implements BasicController<KittenDto> {
     @PutMapping("/update/{id}")
     public ResponseEntity<HttpStatus> update(@PathVariable Long id, @RequestBody KittenDto obj) {
         try {
-            Optional<Kitten> updating = kittenConsumerService.findById(id);
+            Optional<Kitten> updating = kittenService.findById(id);
 
             if (updating.isPresent()) {
                 if (obj.getName() != null) updating.get().setName(obj.getName());
@@ -128,7 +128,7 @@ public class KittenController implements BasicController<KittenDto> {
                 if (obj.getColor() != null) updating.get().setColor(obj.getColor());
 
                 if (obj.getOwner() != null) {
-                    Optional<Owner> potentialOwner = ownerConsumerService.findById(obj.getOwner().id());
+                    Optional<Owner> potentialOwner = ownerService.findById(obj.getOwner().id());
                     potentialOwner.ifPresent(owner -> updating.get().setOwner(owner));
                 }
 
@@ -145,7 +145,7 @@ public class KittenController implements BasicController<KittenDto> {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
         try {
-            Optional<Kitten> deleting = kittenConsumerService.findById(id);
+            Optional<Kitten> deleting = kittenService.findById(id);
             deleting.ifPresent(kitten -> kittenProducerService.delete(kitten));
 
             return ResponseEntity.ok(HttpStatus.OK);

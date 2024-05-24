@@ -13,19 +13,19 @@ public class OwnerConsumerService {
     @Autowired
     private OwnerService ownerService;
 
-    @KafkaListener(topics = "owner.event.post", groupId = "owner_group",
+    @KafkaListener(topics = "${kafka.topics.create.owner}", groupId = "owner_group",
             containerFactory = "ownerKafkaListenerContainerFactory")
     public void post(Owner owner) {
         ownerService.save(owner);
     }
 
-    @KafkaListener(topics = "owner.event.put", groupId = "owner_group",
+    @KafkaListener(topics = "${kafka.topics.update.owner}", groupId = "owner_group",
             containerFactory = "ownerKafkaListenerContainerFactory")
     public void put(Owner owner) {
         ownerService.save(owner);
     }
 
-    @KafkaListener(topics = "owner.event.delete", groupId = "owner_group",
+    @KafkaListener(topics = "${kafka.topics.delete.owner}", groupId = "owner_group",
             containerFactory = "ownerKafkaListenerContainerFactory")
     public void delete(Owner owner) {
         ownerService.delete(owner);

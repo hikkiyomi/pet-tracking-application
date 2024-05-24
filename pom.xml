@@ -14,9 +14,11 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>dal</module>
-        <module>bll</module>
         <module>controller</module>
+        <module>common</module>
+        <module>kitten-microservice</module>
+        <module>owner-microservice</module>
+        <module>interface-microservice</module>
     </modules>
 
     <properties>
